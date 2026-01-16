@@ -43,7 +43,6 @@ resource "azurerm_application_gateway" "appgw" {
     frontend_ip_configuration_name = "frontend-ip"
     frontend_port_name             = "frontend-port-80"
     protocol                       = "Http"
-    host_name = "todoapp.jaydeep.shop"
   }
 
   request_routing_rule {

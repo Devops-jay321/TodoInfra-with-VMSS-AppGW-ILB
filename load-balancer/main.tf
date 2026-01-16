@@ -11,7 +11,8 @@ resource "azurerm_lb" "backend_lb" {
     content {
       name                 = frontend_ip_configuration.key
       subnet_id = data.azurerm_subnet.subnets_back.id
-      private_ip_address_allocation = "Dynamic"
+      private_ip_address_allocation = "static"
+      private_ip_address = "10.16.1.5"
       # public_ip_address_id = data.azurerm_public_ip.pip.id
     }
   }
