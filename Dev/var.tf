@@ -179,7 +179,6 @@ variable "backend_lb_x" {
 variable "backend_pool_x" {
   type = map(object({
     name                = string
-    loadbalancer_id     = string
   }))
 }
 

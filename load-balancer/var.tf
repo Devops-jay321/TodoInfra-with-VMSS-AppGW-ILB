@@ -10,3 +10,6 @@ variable "backend_lb" {
   }))
 }
 
+variable "public_ip_id" {
+  type = string
+}

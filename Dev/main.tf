@@ -72,26 +72,27 @@ module "nic" {
 module "lb" {
   source     = "../load-balancer"
   backend_lb = var.backend_lb_x
-  depends_on = [module.nic, module.vmss]
+  public_ip_id = module.public_ip.public_ip_id["pub-ip_ilb"]
 
 }
 
 module "lb_backend_pool" {
   source       = "../lb_backend_pool"
   backend_pool = var.backend_pool_x
+  lb_id        = module.lb.lb_id["backend_lb_1"]
   depends_on   = [module.lb]
 }
 
-module "lb_backend_pool_assoc" {
-  source       = "../lb_backend_pool_assoc"
-  pool_assoc   = var.pool_assoc_x
-  depends_on   = [module.lb, module.lb_backend_pool, module.nic]
-}
+# module "lb_backend_pool_assoc" {
+#   source       = "../lb_backend_pool_assoc"
+#   pool_assoc   = var.pool_assoc_x
+#   depends_on   = [module.lb, module.lb_backend_pool, module.nic]
+# }
 
 module "health_probe" {
   source = "../health-probe"
   probes = var.probes_x
-  depends_on   = [module.lb, module.lb_backend_pool, module.lb_backend_pool_assoc]
+  depends_on   = [module.lb, module.lb_backend_pool]
   
 }
 
@@ -109,7 +110,7 @@ module "health_probe" {
 
   loadbalancer_id = module.lb.lb_id["backend_lb_1"]
 
-  depends_on = [module.lb, module.lb_backend_pool, module.lb_backend_pool_assoc, module.health_probe]
+  depends_on = [module.lb,module.lb_backend_pool, module.health_probe]
 }
 
 
@@ -180,8 +181,8 @@ module "vmss" {
   frontend_vmss = var.frontend_vmss_x
   backend_vmss  = var.backend_vmss_x
   appgw_backend_pool_id = module.appgw.backend_pool_id["appgw"]
+  backend_lb_pool_id = module.lb_backend_pool.backend_pool_id["pool1"]
   depends_on    = [module.azure_bastion]
-  
 }
 
 module "appgw" {

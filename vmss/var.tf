@@ -47,3 +47,6 @@ variable "backend_vmss" {
 variable "appgw_backend_pool_id" {
   type = string
 }
+variable "backend_lb_pool_id" {
+  type = string
+}

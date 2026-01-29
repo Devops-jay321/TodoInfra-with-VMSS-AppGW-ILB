@@ -107,6 +107,14 @@ public_ip_x = {
     sku                 = "Standard"
   }
 
+    "pub-ip_ilb" = {
+    name                = "ilb-public-ip"
+    resource_group_name = "jaydeep_rg1"
+    location            = "Central india"
+    allocation_method   = "Static"
+    sku                 = "Standard"
+  }
+
 }
 
 natgw_x = {
@@ -285,9 +293,9 @@ backend_lb_x = {
     resource_group_name = "jaydeep_rg1"
     sku                 = "Standard"
     frontend_ip_configuration = {
-      "frontend_ip_1" = {
+      "backend_ip_1" = {
         name                 = "backend-ip-1"
-        #public_ip_address_id = ["lb-public-ip"]
+        # public_ip_address_id = ["ilb-public-ip"]
       }
     }
   }
@@ -296,7 +304,6 @@ backend_lb_x = {
 backend_pool_x = {
   "pool1" = {
     name            = "backend-backend-pool"
-    loadbalancer_id = "jaydeep-backend-lb-1"
   }
 }
 
@@ -322,7 +329,7 @@ lb_rules_x = {
     protocol                       = "Tcp"
     frontend_port                  = 80
     backend_port                   = 80
-    frontend_ip_configuration_name = "frontend_ip_1"
+    frontend_ip_configuration_name = "backend_ip_1"
     backend_pool_key               = "pool1"        # pool assoc ke liye key
     probe_key                      = "backend_probe"
   }

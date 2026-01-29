@@ -1,5 +1,5 @@
 resource "azurerm_application_gateway" "appgw" {
-    for_each = var.appgw_lb
+  for_each            = var.appgw_lb
   name                = each.value.name
   resource_group_name = each.value.resource_group_name
   location            = each.value.location
@@ -25,9 +25,9 @@ resource "azurerm_application_gateway" "appgw" {
     public_ip_address_id = data.azurerm_public_ip.appgw_pip.id
   }
 
+
   backend_address_pool {
     name = "backend-pool"
-
   }
 
   backend_http_settings {
@@ -38,6 +38,7 @@ resource "azurerm_application_gateway" "appgw" {
     request_timeout       = 30
   }
 
+  # ---------- LISTENER ----------
   http_listener {
     name                           = "http-listener"
     frontend_ip_configuration_name = "frontend-ip"
@@ -45,15 +46,19 @@ resource "azurerm_application_gateway" "appgw" {
     protocol                       = "Http"
   }
 
+
+
+  # ---------- ROUTING RULE ----------
   request_routing_rule {
-    name                       = "rule-1"
-    rule_type                 = "Basic"
-    http_listener_name        = "http-listener"
+    name               = "rule1"
+    rule_type          = "Basic"
+    http_listener_name = "http-listener"
     backend_address_pool_name = "backend-pool"
     backend_http_settings_name = "http-setting"
-    priority                   = 100
+    priority           = 100
   }
 }
+
 
 output "backend_pool_id" {
   value = {

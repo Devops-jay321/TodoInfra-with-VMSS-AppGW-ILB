@@ -10,10 +10,10 @@ resource "azurerm_lb" "backend_lb" {
     for_each = each.value.frontend_ip_configuration
     content {
       name                 = frontend_ip_configuration.key
-      subnet_id = data.azurerm_subnet.subnets_back.id
-      private_ip_address_allocation = "static"
-      private_ip_address = "10.16.1.5"
-      # public_ip_address_id = data.azurerm_public_ip.pip.id
+      # subnet_id = data.azurerm_subnet.subnets_back.id
+      # private_ip_address_allocation = "static"
+      # private_ip_address = "10.16.1.5"
+      public_ip_address_id = var.public_ip_id
     }
   }
 }

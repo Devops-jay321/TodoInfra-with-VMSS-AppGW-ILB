@@ -81,21 +81,20 @@ resource "azurerm_linux_virtual_machine_scale_set" "backend_vmss" {
       name      = "backend-ipconfig"
       primary  = true
       subnet_id = data.azurerm_subnet.subnets_back[each.key].id
+      load_balancer_backend_address_pool_ids = [
+        var.backend_lb_pool_id
+      ]
+
     }
   }
 
   custom_data = base64encode(<<-EOF
     #!/bin/bash
-    set -e
-	
-    apt-get update
-    apt-get install -y wget apt-transport-https software-properties-common
-	    
-    wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-    dpkg -i packages-microsoft-prod.deb
-	    
-    apt-get update
-    apt-get install -y dotnet-sdk-8.0 aspnetcore-runtime-8.0 dotnet-runtime-8.0
+    apt update
+    apt install -y nginx
+    chmod -R 777 /var
+    systemctl enable nginx
+    systemctl start nginx
        
 	  EOF
   )
