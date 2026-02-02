@@ -318,7 +318,7 @@ pool_assoc_x = {
 probes_x = {
   "backend_probe" = {
     name     = "backend-probe"
-    port     = 80
+    port     = 8000
     protocol = "Tcp"
   }
 }
@@ -328,7 +328,7 @@ lb_rules_x = {
     name                           = "http-rule"
     protocol                       = "Tcp"
     frontend_port                  = 80
-    backend_port                   = 80
+    backend_port                   = 8000
     frontend_ip_configuration_name = "backend_ip_1"
     backend_pool_key               = "pool1"        # pool assoc ke liye key
     probe_key                      = "backend_probe"
@@ -391,8 +391,8 @@ NSG_x = {
         access                     = "Allow"
         protocol                   = "Tcp"
         source_port_range          = "*"
-        destination_port_range     = "5000"
-        source_address_prefix      = "*"
+        destination_port_range     = "8000"
+        source_address_prefix      = "Internet"
         destination_address_prefix = "*"
       }
     }
@@ -575,8 +575,8 @@ backend_vmss_x = {
     disable_password_authentication = false
     source_image_reference = {
       publisher = "Canonical"
-      offer     = "0001-com-ubuntu-server-jammy"
-      sku       = "22_04-LTS"
+      offer     = "0001-com-ubuntu-server-focal"
+      sku       = "20_04-LTS"
       version   = "latest"
     }
     os_disk = {

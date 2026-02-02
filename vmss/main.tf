@@ -90,11 +90,16 @@ resource "azurerm_linux_virtual_machine_scale_set" "backend_vmss" {
 
   custom_data = base64encode(<<-EOF
     #!/bin/bash
-    apt update
-    apt install -y nginx
-    chmod -R 777 /var
-    systemctl enable nginx
-    systemctl start nginx
+    set -e
+    apt-get update && apt-get install -y curl gnupg2 unixodbc unixodbc-dev
+
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg && \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/debian/12/prod bookworm main" \
+    > /etc/apt/sources.list.d/mssql-release.list
+
+    apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
+    apt install python3-pip -y
        
 	  EOF
   )
